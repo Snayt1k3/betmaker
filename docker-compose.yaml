@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  line-provider:
+    build: line-provider
+    ports:
+      - "${LINE_API_PORT}:${LINE_API_PORT}"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: $LINE_DB_USER
+      POSTGRES_PASSWORD: $LINE_DB_PASSWORD
+      POSTGRES_DB: $LINE_DB_NAME
+    ports:
+      - "${LINE_DB_PORT}:${LINE_DB_PORT}"
+
