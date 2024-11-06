@@ -9,7 +9,7 @@ from src.application.dto import EventDTO
 from src.application.services.event import EventService
 from src.ioc import IoC
 
-events_router = APIRouter(prefix="/events")
+events_router = APIRouter()
 ioc = IoC()
 
 

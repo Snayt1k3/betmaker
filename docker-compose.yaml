@@ -6,11 +6,17 @@ services:
     ports:
       - "${LINE_API_PORT}:${LINE_API_PORT}"
     depends_on:
-      - db
+      - line-db
+    environment:
+      - DB_HOST=line-db
+      - DB_PORT=${LINE_DB_PORT}
+      - DB_NAME=${LINE_DB_NAME}
+      - DB_USER=${LINE_DB_USER}
+      - DB_PASSWORD=${LINE_DB_PASSWORD}
     env_file:
       - .env
 
-  db:
+  line-db:
     image: postgres:latest
     environment:
       POSTGRES_USER: $LINE_DB_USER
@@ -18,4 +24,36 @@ services:
       POSTGRES_DB: $LINE_DB_NAME
     ports:
       - "${LINE_DB_PORT}:${LINE_DB_PORT}"
+    volumes:
+      - line-db-data:/var/lib/postgresql/data
 
+  bet-service:
+    build: bet-service
+    ports:
+      - "${BET_API_PORT}:${BET_API_PORT}"
+    depends_on:
+      - bet-db
+      - line-provider
+    environment:
+      - BET_DB_HOST=bet-db
+      - BET_DB_PORT=${BET_DB_PORT}
+      - BET_DB_NAME=${BET_DB_NAME}
+      - BET_DB_USER=${BET_DB_USER}
+      - BET_DB_PASSWORD=${BET_DB_PASSWORD}
+    env_file:
+      - .env
+
+  bet-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: $BET_DB_USER
+      POSTGRES_PASSWORD: $BET_DB_PASSWORD
+      POSTGRES_DB: $BET_DB_NAME
+    ports:
+      - "${BET_DB_PORT}:${BET_DB_PORT}"
+    volumes:
+      - bet-db-data:/var/lib/postgresql/data
+
+volumes:
+  line-db-data:
+  bet-db-data:
