@@ -1,7 +1,8 @@
 from typing import List, Optional, TypeVar, Generic
 from abc import ABC, abstractmethod
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class IRepository(ABC, Generic[T]):
     @abstractmethod
@@ -28,6 +29,7 @@ class IRepository(ABC, Generic[T]):
     async def delete(self, id: int) -> None:
         """Удаляет объект по его идентификатору."""
         ...  # Предполагается, что репозиторий уже реализован
+
 
 class IUnitOfWork(ABC):
     events: IRepository

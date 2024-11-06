@@ -11,7 +11,9 @@ class EventService:
     async def create_event(self, odds: float, deadline: datetime) -> Event:
         """Создает новое событие."""
         async with self.uow as uow:
-            event = await uow.events.add(odds=odds, deadline=deadline, status=EventStatus.UNFINISHED)
+            event = await uow.events.add(
+                odds=odds, deadline=deadline, status=EventStatus.UNFINISHED
+            )
         return event
 
     async def get_event_by_id(self, id: int) -> Optional[Event]:
@@ -19,7 +21,9 @@ class EventService:
         async with self.uow as uow:
             return await uow.events.get_by_id(id)
 
-    async def update_event_status(self, id: int, new_status: EventStatus) -> Optional[Event]:
+    async def update_event_status(
+        self, id: int, new_status: EventStatus
+    ) -> Optional[Event]:
         """Обновляет статус события."""
         async with self.uow as uow:
             event = await uow.events.update(id, status=new_status)

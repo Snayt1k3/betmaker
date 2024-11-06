@@ -5,13 +5,15 @@ from datetime import datetime
 
 Base = declarative_base()
 
+
 class EventStatus(enum.Enum):
     UNFINISHED = "unfinished"
     WIN_FIRST_TEAM = "win_first_team"
     WIN_SECOND_TEAM = "win_second_team"
 
+
 class Event(Base):
-    __tablename__ = 'events'
+    __tablename__ = "events"
 
     id = Column(String, primary_key=True, unique=True, index=True)
     odds = Column(Float, nullable=False)

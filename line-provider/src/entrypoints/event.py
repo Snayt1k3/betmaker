@@ -15,9 +15,9 @@ ioc = IoC()
 
 @events_router.post("/", response_model=EventDTO)
 async def create_event(
-        odds: float,
-        deadline: datetime,
-        event_service: EventService = Depends(ioc.event_service)
+    odds: float,
+    deadline: datetime,
+    event_service: EventService = Depends(ioc.event_service),
 ):
     try:
         event = await event_service.create_event(odds, deadline)
@@ -42,9 +42,9 @@ async def get_active_events(event_service: EventService = Depends(ioc.event_serv
 
 @events_router.patch("/{id}", response_model=EventDTO)
 async def update_event_status(
-        id: int,
-        new_status: EventStatus,
-        event_service: EventService = Depends(ioc.event_service)
+    id: int,
+    new_status: EventStatus,
+    event_service: EventService = Depends(ioc.event_service),
 ):
     try:
 
@@ -57,7 +57,9 @@ async def update_event_status(
 
 
 @events_router.delete("/{id}", status_code=204)
-async def delete_event(id: int, event_service: EventService = Depends(ioc.event_service)):
+async def delete_event(
+    id: int, event_service: EventService = Depends(ioc.event_service)
+):
     success = await event_service.delete_event(id)
     if not success:
         raise HTTPException(status_code=404, detail="Event not found")

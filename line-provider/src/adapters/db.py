@@ -7,11 +7,8 @@ from config import db_config
 DATABASE_URL = db_config.async_database_postgres
 
 engine = create_async_engine(DATABASE_URL, echo=True)
-async_session = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
-)
+async_session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+
 
 @asynccontextmanager
 async def get_session() -> AsyncSession:

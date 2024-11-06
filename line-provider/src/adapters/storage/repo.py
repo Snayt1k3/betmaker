@@ -14,10 +14,7 @@ class EventRepository(IRepository[Event]):
 
     async def add(self, **kwargs) -> Event:
         """Создает новое событие и сохраняет его в базе данных."""
-        new_event = Event(
-            id=None,
-            **kwargs
-        )
+        new_event = Event(id=None, **kwargs)
         self.session.add(new_event)
         return new_event
 
@@ -27,19 +24,12 @@ class EventRepository(IRepository[Event]):
         return result.scalars().first()
 
     async def filter_by(self, **kwargs) -> List[Event]:
-        result = await self.session.execute(
-            select(Event).filter_by(**kwargs)
-        )
+        result = await self.session.execute(select(Event).filter_by(**kwargs))
         return result.scalars().all()
 
     async def update(self, id: str, **kwargs) -> Optional[Event]:
         """Обновляет статус события по его идентификатору."""
-        query = (
-            update(Event)
-            .where(Event.id == id)
-            .values(**kwargs)
-            .returning(Event)
-        )
+        query = update(Event).where(Event.id == id).values(**kwargs).returning(Event)
         res = await self.session.execute(query)
 
         return res.first()

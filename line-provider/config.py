@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 # Загружаем переменные окружения из файла .env
 load_dotenv()
 
+
 class DBConfig(BaseSettings):
     DB_USER: str = Field(...)
     DB_PASSWORD: str = Field(...)
