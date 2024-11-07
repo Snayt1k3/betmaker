@@ -11,51 +11,53 @@ from src.ioc import IoC
 
 router = APIRouter()
 
-ioc = IoC()
 
 
 @router.post("/", response_model=BetRead)
 async def create_bet(
         bet_data: BetCreate,
-        bet_service: BetService = Depends(ioc.bet_service)
+        ioc: IoC = Depends(IoC)
 ):
     """
     Создает новую ставку на событие.
     """
     try:
-        return await bet_service.create_bet(bet_data)
+        async with ioc.bet_service() as bet_service:
+            return await bet_service.create_bet(bet_data)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/", response_model=List[BetRead])
 async def get_all_bets(
-        bet_service: BetService = Depends(ioc.bet_service)
+        ioc: IoC = Depends(IoC)
 ):
     """
     Возвращает список всех сделанных ставок.
     """
-    return await bet_service.get_all_bets()
+    async with ioc.bet_service() as bet_service:
+        return await bet_service.get_all_bets()
 
 
 @router.get("/event/active", response_model=List[EventDTO])
 async def get_active_events(
-        event_service: EventService = Depends(ioc.event_service)
+        ioc: IoC = Depends(IoC)
 ):
     """
     Возвращает список всех ивентов доступных для ставки
     """
-    return await event_service.get_active_events()
+    async with ioc.event_service() as event_service:
+        return await event_service.get_active_events()
 
 
-@router.patch("/event/{event_id}", response_model=List[BetRead])
+@router.patch("/event/update/{event_id}", response_model=List[BetRead])
 async def update_bets_status(
         event_id: int,
         status: EventStatus,
-        bet_service: BetService = Depends(ioc.bet_service)
+        ioc: IoC = Depends(IoC)
 ):
     """
     Обновляет статус ставки.
     """
-
-    return await bet_service.update_bets_by_event(event_id, status)
+    async with ioc.bet_service() as bet_service:
+        return await bet_service.update_bets_by_event(event_id, status)

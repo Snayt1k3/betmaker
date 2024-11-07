@@ -1,9 +1,6 @@
-from pydantic import Field
-from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
-
+from pydantic_settings import BaseSettings
 load_dotenv()
-
 
 class DBConfig(BaseSettings):
     DB_USER: str
@@ -24,6 +21,7 @@ class DBConfig(BaseSettings):
 
     class Config:
         env_prefix = "BET_"
+
 
 class HttpSettings(BaseSettings):
     URL_GET_ACTIVE_EVENTS: str

@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import Column, Float, DateTime, Enum, Integer
+from sqlalchemy import Column, Float, DateTime, Enum, Integer, FetchedValue
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -16,9 +16,9 @@ class EventStatus(enum.Enum):
 class Event(Base):
     __tablename__ = "events"
 
-    id = Column(Integer, primary_key=True, unique=True, index=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, index=True, server_default=FetchedValue())
     odds = Column(Float, nullable=False)
-    deadline = Column(DateTime, nullable=False)
+    deadline = Column(DateTime(timezone=True), nullable=False)
     status = Column(Enum(EventStatus), default=EventStatus.UNFINISHED)
 
     def is_active(self) -> bool:

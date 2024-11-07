@@ -17,4 +17,4 @@ COPY . /app/
 EXPOSE 5000
 
 # Команда для запуска приложения с использованием Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]

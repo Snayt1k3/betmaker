@@ -12,11 +12,11 @@ class EventService:
         self.uow = uow
         self.request = request
 
-    async def create_event(self, odds: float, deadline: datetime) -> Event:
+    async def create_event(self, odds: float, deadline: int) -> Event:
         """Создает новое событие."""
         async with self.uow as uow:
             event = await uow.events.add(
-                odds=odds, deadline=deadline, status=EventStatus.UNFINISHED
+                odds=odds, deadline=datetime.fromtimestamp(deadline), status=EventStatus.UNFINISHED
             )
         return event
 
@@ -48,4 +48,4 @@ class EventService:
             return await uow.events.filter_by(status=EventStatus.UNFINISHED)
 
     async def update_bets(self, status: EventStatus, event_id: int) -> None:
-        await self.request.patch(http_config.URL_UPDATE_BETS + event_id, json={"status": status.value})
+        await self.request.patch(http_config.URL_UPDATE_BETS + str(event_id), json={"status": status.value})

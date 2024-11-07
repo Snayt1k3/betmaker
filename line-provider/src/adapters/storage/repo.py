@@ -32,7 +32,7 @@ class EventRepository(IRepository[Event]):
         query = update(Event).where(Event.id == id).values(**kwargs).returning(Event)
         res = await self.session.execute(query)
 
-        return res.first()
+        return res.scalars().first()
 
     async def delete(self, id: int) -> None:
         """Удаляет событие по его идентификатору."""

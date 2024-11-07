@@ -14,13 +14,6 @@ class BetService:
     async def create_bet(self, bet_data: BetCreate) -> Bet:
         """Создает новую ставку на событие."""
         async with self.uow:
-            event = await self.uow.events.get_by_id(bet_data.event_id)
-
-            # Проверяем, что событие существует и еще активно для ставок
-            if event is None:
-                raise ValueError("Событие не найдено")
-            if event.is_active():
-                raise ValueError("Ставки на это событие уже не принимаются")
 
             # Создаем ставку
             bet = await self.uow.bets.add(
