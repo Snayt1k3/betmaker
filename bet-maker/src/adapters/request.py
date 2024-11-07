@@ -4,6 +4,7 @@ import aiohttp
 
 logger = getLogger(__name__)
 
+
 class HttpClient:
 
     async def request(self, method: str, url: str, **kwargs: dict):
@@ -13,7 +14,9 @@ class HttpClient:
                 logger.info(f"Starting {method.upper()} request to {url} with {kwargs}")
                 async with session.request(method.upper(), url, **kwargs) as response:
                     response_data = await response.json()
-                    logger.info(f"Received response from {url} with status {response.status}: {response_data}")
+                    logger.info(
+                        f"Received response from {url} with status {response.status}: {response_data}"
+                    )
                     return response_data
             except Exception as e:
                 logger.error(f"Error during {method.upper()} request to {url}: {e}")

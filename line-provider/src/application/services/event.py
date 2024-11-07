@@ -16,7 +16,9 @@ class EventService:
         """Создает новое событие."""
         async with self.uow as uow:
             event = await uow.events.add(
-                odds=odds, deadline=datetime.fromtimestamp(deadline), status=EventStatus.UNFINISHED
+                odds=odds,
+                deadline=datetime.fromtimestamp(deadline),
+                status=EventStatus.UNFINISHED,
             )
         return event
 
@@ -26,7 +28,7 @@ class EventService:
             return await uow.events.get_by_id(id)
 
     async def update_event_status(
-            self, id: int, new_status: EventStatus
+        self, id: int, new_status: EventStatus
     ) -> Optional[Event]:
         """Обновляет статус события."""
         async with self.uow as uow:
@@ -48,4 +50,6 @@ class EventService:
             return await uow.events.filter_by(status=EventStatus.UNFINISHED)
 
     async def update_bets(self, status: EventStatus, event_id: int) -> None:
-        await self.request.patch(http_config.URL_UPDATE_BETS + str(event_id), json={"status": status.value})
+        await self.request.patch(
+            http_config.URL_UPDATE_BETS + str(event_id), json={"status": status.value}
+        )

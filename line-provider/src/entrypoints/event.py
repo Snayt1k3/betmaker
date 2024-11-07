@@ -13,9 +13,9 @@ events_router = APIRouter()
 
 @events_router.post("/", response_model=EventDTO)
 async def create_event(
-        odds: float,
-        deadline: int,
-        ioc: IoC = Depends(IoC),
+    odds: float,
+    deadline: int,
+    ioc: IoC = Depends(IoC),
 ):
     try:
         async with ioc.event_service() as event_service:
@@ -34,9 +34,7 @@ async def get_active_events(ioc: IoC = Depends(IoC)):
 
 @events_router.patch("/{id}", response_model=EventDTO)
 async def update_event_status(
-        id: int,
-        new_status: EventStatus,
-        ioc: IoC = Depends(IoC)
+    id: int, new_status: EventStatus, ioc: IoC = Depends(IoC)
 ):
     try:
         async with ioc.event_service() as event_service:
@@ -50,9 +48,7 @@ async def update_event_status(
 
 
 @events_router.delete("/{id}", status_code=204)
-async def delete_event(
-        id: int, ioc: IoC = Depends(IoC)
-):
+async def delete_event(id: int, ioc: IoC = Depends(IoC)):
     async with ioc.event_service() as event_service:
         success = await event_service.delete_event(id)
     if not success:

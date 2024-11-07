@@ -20,7 +20,7 @@ class BetService:
                 event_id=bet_data.event_id,
                 amount=bet_data.amount,
                 status=EventStatus.UNFINISHED,
-                created_at=datetime.utcnow()
+                created_at=datetime.utcnow(),
             )
             return bet
 
@@ -55,7 +55,9 @@ class BetService:
             bets = await uow.bets.filter_by()
         return bets
 
-    async def update_bets_by_event(self, event_id: int, status: EventStatus) -> List[Bet]:
+    async def update_bets_by_event(
+        self, event_id: int, status: EventStatus
+    ) -> List[Bet]:
         async with self.uow as uow:
             bets = await uow.bets.update_many(Bet.event_id == event_id, status=status)
         return bets

@@ -8,8 +8,9 @@ from src.application.enum import EventStatus
 
 class BetCreate(BaseModel):
     event_id: int
-    amount: condecimal(gt=0, max_digits=10,
-                       decimal_places=2)  # Проверка на положительное число с двумя знаками после запятой
+    amount: condecimal(
+        gt=0, max_digits=10, decimal_places=2
+    )  # Проверка на положительное число с двумя знаками после запятой
     status: EventStatus = EventStatus.UNFINISHED  # Статус будет из Enum
 
     class Config:
