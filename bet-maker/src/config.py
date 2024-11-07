@@ -1,12 +1,16 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class DBConfig(BaseSettings):
-    DB_USER: str = Field(...)
-    DB_PASSWORD: str = Field(...)
-    DB_HOST: str = Field(...)
-    DB_PORT: int = Field(...)
-    DB_NAME: str = Field(...)
+    DB_USER: str
+    DB_PASSWORD: str
+    DB_HOST: str
+    DB_PORT: int
+    DB_NAME: str
 
     @property
     def async_database_postgres(self) -> str:

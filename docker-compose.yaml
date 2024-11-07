@@ -28,7 +28,7 @@ services:
       - line-db-data:/var/lib/postgresql/data
 
   bet-service:
-    build: bet-service
+    build: bet-maker
     ports:
       - "${BET_API_PORT}:${BET_API_PORT}"
     depends_on:
@@ -50,7 +50,7 @@ services:
       POSTGRES_PASSWORD: $BET_DB_PASSWORD
       POSTGRES_DB: $BET_DB_NAME
     ports:
-      - "${BET_DB_PORT}:${BET_DB_PORT}"
+      - "${BET_DB_PORT}:5432"
     volumes:
       - bet-db-data:/var/lib/postgresql/data
 
