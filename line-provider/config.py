@@ -26,5 +26,9 @@ class DBConfig(BaseSettings):
     class Config:
         env_prefix = "LINE_"
 
+class HttpSettings(BaseSettings):
+    URL_UPDATE_BETS: str
 
+
+http_config = HttpSettings()
 db_config = DBConfig()

@@ -49,6 +49,7 @@ async def update_event_status(
     try:
 
         event = await event_service.update_event_status(id, new_status)
+        await event_service.update_bets(new_status, id)
         if not event:
             raise HTTPException(status_code=404, detail="Event not found")
         return event

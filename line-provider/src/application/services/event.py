@@ -1,12 +1,16 @@
-from typing import List, Optional
 from datetime import datetime
-from src.application.interface import IUnitOfWork
+from typing import List, Optional
+
+from config import http_config
+from src.adapters.request import HttpClient
 from src.adapters.storage.models import Event, EventStatus
+from src.application.interface import IUnitOfWork
 
 
 class EventService:
-    def __init__(self, uow: IUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork, request: HttpClient) -> None:
         self.uow = uow
+        self.request = request
 
     async def create_event(self, odds: float, deadline: datetime) -> Event:
         """Создает новое событие."""
@@ -22,7 +26,7 @@ class EventService:
             return await uow.events.get_by_id(id)
 
     async def update_event_status(
-        self, id: int, new_status: EventStatus
+            self, id: int, new_status: EventStatus
     ) -> Optional[Event]:
         """Обновляет статус события."""
         async with self.uow as uow:
@@ -42,3 +46,6 @@ class EventService:
     async def get_active_events(self) -> List[Event]:
         async with self.uow as uow:
             return await uow.events.filter_by(status=EventStatus.UNFINISHED)
+
+    async def update_bets(self, status: EventStatus, event_id: int) -> None:
+        await self.request.patch(http_config.URL_UPDATE_BETS + event_id, json={"status": status.value})
